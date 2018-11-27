@@ -25,34 +25,55 @@ videogames.get('/:id', (req, res) => {
 // Create
 
 videogames.post('/', (req, res) => {
-  models.Videogame.create({
-    distributor: req.body.distributor,
-    name: req.body.name,
-    type: req.body.type
-  }).then(result => {
-    res.json(result);
+  models.Videogame.findOne({ where: { name: req.body.name } }).then(preResult => {
+    if (preResult) {
+      return res.status(400).send('Már van ilyen Játék!')
+    } else {
+      models.Videogame.create({
+        distributor: req.body.distributor,
+        name: req.body.name,
+        type: req.body.type
+      }).then(result => {
+        res.json(result);
+      });
+    }
   });
 });
 
 // Update
 
 videogames.put('/:id', (req, res) => {
-  models.Videogame.update({
-    distributor: req.body.distributor,
-    name: req.body.name,
-    type: req.body.type
-  }, {
-      where: { id: req.params.id }
-    }).then(result => {
-      res.json(result);
+  models.Videogame.findById(req.params.id).then(preResult => {
+    if (!preResult) {
+      return res.status(400).send('Nincs ilyen Játék!');
+    }
+    models.Videogame.findOne({ where: { name: req.body.name } }).then(preResult2 => {
+      if (preResult2) {
+        return res.status(400).send('Már van ilyen nevű Játék!');
+      } else {
+        models.Videogame.update({
+          distributor: req.body.distributor,
+          name: req.body.name,
+          type: req.body.type
+        }, {
+          where: { id: req.params.id }
+        }).then(result => {
+          res.json(result);
+        });
+      }
     });
+  });
 });
 
 // Delete
 
 videogames.delete('/:id', (req, res) => {
   models.Videogame.destroy({ where: { id: req.params.id } }).then(result => {
-    res.json(result);
+    if (!result) {
+      return res.status(400).send('Nincs ilyen Játék!');
+    } else {
+      res.json(result);
+    }
   });
 });
 
