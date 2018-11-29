@@ -6,18 +6,33 @@ const models = require('../models');
 
 pokemons.get('/', (req, res) => {
   models.Pokemon.findAll().then(pokemons => {
-    res.json(pokemons);
+    res.locals.pokemons = pokemons;
+    res.render('pokemons/index.handlebars');
   });
 });
 
 // Show
 
-pokemons.get('/:id', (req, res) => {
+pokemons.get('/:id/', (req, res) => {
   models.Pokemon.findById(req.params.id).then(pokemons => {
     if (pokemons === null) {
       res.status(400).send('Nincs ilyen Pokemon!');
     } else {
-      res.json(pokemons);
+      res.locals.pokemons = pokemons;
+      res.render('pokemons/show.handlebars');
+    }
+  });
+});
+
+// Edit
+
+pokemons.get('/:id/edit', (req, res) => {
+  models.Pokemon.findById(req.params.id).then(pokemons => {
+    if (pokemons === null) {
+      res.status(400).send('Nincs ilyen Pokemon!');
+    } else {
+      res.locals.pokemons = pokemons;
+      res.render('pokemons/edit.handlebars');
     }
   });
 });

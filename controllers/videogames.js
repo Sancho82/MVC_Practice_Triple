@@ -6,18 +6,33 @@ const models = require('../models');
 
 videogames.get('/', (req, res) => {
   models.Videogame.findAll().then(videogames => {
-    res.json(videogames);
+    res.locals.videogames = videogames;
+    res.render('videogames/index.handlebars');
   });
 });
 
 // Show
 
-videogames.get('/:id', (req, res) => {
-  models.Videogame.findById(req.params.id).then(videogame => {
-    if (videogame === null) {
-      res.status(400).send('Nincs ilyen játék!');
+videogames.get('/:id/', (req, res) => {
+  models.Videogame.findById(req.params.id).then(videogames => {
+    if (videogames === null) {
+      res.status(400).send('Nincs ilyen Pokemon!');
     } else {
-      res.json(videogame);
+      res.locals.videogames = videogames;
+      res.render('videogames/show.handlebars');
+    }
+  });
+});
+
+// Edit
+
+videogames.get('/:id/edit', (req, res) => {
+  models.Videogame.findById(req.params.id).then(videogames => {
+    if (videogames === null) {
+      res.status(400).send('Nincs ilyen Pokemon!');
+    } else {
+      res.locals.videogames = videogames;
+      res.render('videogames/edit.handlebars');
     }
   });
 });
