@@ -16,7 +16,7 @@ videogames.get('/', (req, res) => {
 videogames.get('/:id/', (req, res) => {
   models.Videogame.findById(req.params.id).then(videogames => {
     if (videogames === null) {
-      res.status(400).send('Nincs ilyen Pokemon!');
+      res.status(400).send('Nincs ilyen Játék!');
     } else {
       res.locals.videogames = videogames;
       res.render('videogames/show.handlebars');
@@ -29,7 +29,7 @@ videogames.get('/:id/', (req, res) => {
 videogames.get('/:id/edit', (req, res) => {
   models.Videogame.findById(req.params.id).then(videogames => {
     if (videogames === null) {
-      res.status(400).send('Nincs ilyen Pokemon!');
+      res.status(400).send('Nincs ilyen Játék!');
     } else {
       res.locals.videogames = videogames;
       res.render('videogames/edit.handlebars');
@@ -42,7 +42,7 @@ videogames.get('/:id/edit', (req, res) => {
 videogames.post('/', (req, res) => {
   models.Videogame.findOne({ where: { name: req.body.name } }).then(preResult => {
     if (preResult) {
-      return res.status(400).send('Már van ilyen Játék!')
+      return res.status(400).send('Már van ilyen Játék!');
     } else {
       models.Videogame.create({
         distributor: req.body.distributor,

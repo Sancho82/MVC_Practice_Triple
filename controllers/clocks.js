@@ -42,7 +42,7 @@ clocks.get('/:id/edit', (req, res) => {
 clocks.post('/', (req, res) => {
   models.Clock.findOne({ where: { model: req.body.model } }).then(preResult => {
     if (preResult) {
-      return res.status(400).send('Már van ilyen óra!')
+      return res.status(400).send('Már van ilyen óra!');
     } else {
       models.Clock.create({
         manufacturer: req.body.manufacturer,
@@ -74,7 +74,8 @@ clocks.put('/:id', (req, res) => {
         }, {
           where: { id: req.params.id }
         }).then(result => {
-          res.json(result);
+          res.redirect(`/clocks`);
+          // res.redirect(`/clocks/${req.params.id}`);
         });
       }
     });
@@ -86,9 +87,9 @@ clocks.put('/:id', (req, res) => {
 clocks.delete('/:id', (req, res) => {
   models.Clock.destroy({ where: { id: req.params.id } }).then(result => {
     if (!result) {
-      return res.status(400).send('Nincs ilyen óra!')
+      return res.status(400).send('Nincs ilyen óra!');
     } else {
-      res.json(result);
+      res.redirect(`/clocks`);
     }
   });
 });

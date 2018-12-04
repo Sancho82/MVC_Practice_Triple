@@ -5,7 +5,9 @@ const clocks = require('./controllers/clocks');
 const videogames = require('./controllers/videogames');
 const pokemons = require('./controllers/pokemons');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
+app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
@@ -15,7 +17,7 @@ app.use('/clocks', clocks);
 app.use('/videogames', videogames);
 app.use('/pokemons', pokemons);
 app.listen(process.env.PORT, () => {
-  console.log('Listen on PORT 5001');
+  console.log('Listening...');
 });
 
 // modellel a tábla adatait tudjuk kezelni - adatlekérdező/adatmanipuláció
