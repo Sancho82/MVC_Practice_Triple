@@ -73,7 +73,8 @@ pokemons.put('/:id', (req, res) => {
         }, {
           where: { id: req.params.id }
         }).then(result => {
-          res.json(result);
+          res.redirect('/pokemons');
+          res.send(`A ${result.id} id-jű pokemon sikeresen frissítve.`);
         });
       }
     });
@@ -87,7 +88,8 @@ pokemons.delete('/:id', (req, res) => {
     if (!result) {
       return res.status(400).send('Nincs ilyen Pokemon!');
     } else {
-      res.json(result);
+      res.redirect('/pokemons');
+      res.send('Pokemon sikeresen törölve.');
     }
   });
 });
