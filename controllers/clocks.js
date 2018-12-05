@@ -11,6 +11,10 @@ clocks.get('/', (req, res) => {
   });
 });
 
+clocks.get('/new', (req, res) => {
+  res.render('clocks/post.handlebars');
+});
+
 // Show
 
 clocks.get('/:id', (req, res) => {
@@ -41,18 +45,14 @@ clocks.get('/:id/edit', (req, res) => {
 
 clocks.post('/', (req, res) => {
   models.Clock.findOne({ where: { model: req.body.model } }).then(preResult => {
-    if (preResult) {
-      return res.status(400).send('Már van ilyen óra!');
-    } else {
-      models.Clock.create({
-        manufacturer: req.body.manufacturer,
-        model: req.body.model,
-        type: req.body.type
-      }).then(clock => {
-        res.locals.clock = clock;
-        res.render('clocks/post.handlebars');
-      });
-    }
+    models.Clock.create({
+      manufacturer: req.body.manufacturer,
+      model: req.body.model,
+      type: req.body.type
+    }).then(clock => {
+      res.locals.clock = clock;
+      res.redirect('clocks');
+    });
   });
 });
 

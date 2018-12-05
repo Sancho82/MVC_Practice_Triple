@@ -1,5 +1,6 @@
 <table class="table table-striped">
   <tbody>
+    <td><a href="/clocks/new" class="btn btn-success">New</a></td>
     {{#each clocks}}
     <tr>
       <td>{{id}}</td>
@@ -13,9 +14,7 @@
           <input class="btn btn-danger" type="submit" value="Delete"/>
         </form>
       </td>
-    
     </tr>
     {{/each}}    
-    <td><a href="/clocks" class="btn btn-success">New</a></td>
   </tbody>
 </table>
