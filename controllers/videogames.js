@@ -11,14 +11,18 @@ videogames.get('/', (req, res) => {
   });
 });
 
+videogames.get('/new', (req, res) => {
+  res.render('videogames/post.handlebars');
+});
+
 // Show
 
-videogames.get('/:id/', (req, res) => {
-  models.Videogame.findById(req.params.id).then(videogames => {
-    if (videogames === null) {
+videogames.get('/:id', (req, res) => {
+  models.Videogame.findById(req.params.id).then(videogame => {
+    if (videogame === null) {
       res.status(400).send('Nincs ilyen Játék!');
     } else {
-      res.locals.videogames = videogames;
+      res.locals.videogame = videogame;
       res.render('videogames/show.handlebars');
     }
   });
@@ -27,11 +31,11 @@ videogames.get('/:id/', (req, res) => {
 // Edit
 
 videogames.get('/:id/edit', (req, res) => {
-  models.Videogame.findById(req.params.id).then(videogames => {
-    if (videogames === null) {
+  models.Videogame.findById(req.params.id).then(videogame => {
+    if (videogame === null) {
       res.status(400).send('Nincs ilyen Játék!');
     } else {
-      res.locals.videogames = videogames;
+      res.locals.videogame = videogame;
       res.render('videogames/edit.handlebars');
     }
   });
@@ -49,7 +53,7 @@ videogames.post('/', (req, res) => {
         name: req.body.name,
         type: req.body.type
       }).then(result => {
-        res.json(result);
+        res.redirect('/videogames');
       });
     }
   });
@@ -73,7 +77,7 @@ videogames.put('/:id', (req, res) => {
         }, {
           where: { id: req.params.id }
         }).then(result => {
-          res.json(result);
+          res.redirect('/videogames');
         });
       }
     });
@@ -87,7 +91,7 @@ videogames.delete('/:id', (req, res) => {
     if (!result) {
       return res.status(400).send('Nincs ilyen Játék!');
     } else {
-      res.json(result);
+      res.redirect('/videogames');
     }
   });
 });
